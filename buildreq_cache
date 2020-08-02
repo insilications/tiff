@@ -1,9 +1,0 @@
-v4.0.10
-libjpeg-turbo-dev
-libwebp-dev
-mesa-dev
-pkgconfig(ice)
-pkgconfig(zlib)
-xz-dev
-zlib-dev
-zstd-dev

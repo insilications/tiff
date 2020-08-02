@@ -1,2 +1,21 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
+# buildreq-cmake
+# buildreq-scons
+findutils
+gcc-dev32
+gcc-libgcc32
+gcc-libstdc++32
+glibc-dev32
+glibc-libc32
+libjpeg-turbo-dev
+libjpeg-turbo-staticdev
+libwebp-dev
+libwebp-staticdev
+mesa-dev
+xz-dev
+xz-staticdev
+zlib-dev
+zlib-staticdev
+zstd-dev
+zstd-staticdev

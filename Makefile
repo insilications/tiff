@@ -1,5 +1,5 @@
 PKG_NAME := tiff
-URL = https://gitlab.com/libtiff/libtiff/-/archive/v4.0.10/libtiff-v4.0.10.tar.gz
+URL = https://gitlab.com/libtiff/libtiff.git
 ARCHIVES = 
 
 include ../common/Makefile.common
