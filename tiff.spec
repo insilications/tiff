@@ -5,9 +5,9 @@
 %define keepstatic 1
 Name     : tiff
 Version  : 360
-Release  : 53
-URL      : file:///insilications/build/clearlinux/packages/tiff/tiff-360.tar.gz
-Source0  : file:///insilications/build/clearlinux/packages/tiff/tiff-360.tar.gz
+Release  : 54
+URL      : file:///aot/build/clearlinux/packages/tiff/tiff-360.tar.gz
+Source0  : file:///aot/build/clearlinux/packages/tiff/tiff-360.tar.gz
 Summary  : Tag Image File Format (TIFF) library.
 Group    : Development/Tools
 License  : MIT libtiff
@@ -15,15 +15,23 @@ Requires: tiff-bin = %{version}-%{release}
 Requires: tiff-lib = %{version}-%{release}
 Requires: tiff-man = %{version}-%{release}
 BuildRequires : buildreq-cmake
-BuildRequires : buildreq-scons
 BuildRequires : findutils
+BuildRequires : gcc
+BuildRequires : gcc-abi
+BuildRequires : gcc-dev
 BuildRequires : gcc-dev32
+BuildRequires : gcc-doc
 BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libs-math
 BuildRequires : gcc-libstdc++32
+BuildRequires : gcc-libubsan
+BuildRequires : gcc-locale
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
+BuildRequires : libgcc1
 BuildRequires : libjpeg-turbo-dev
 BuildRequires : libjpeg-turbo-staticdev
+BuildRequires : libstdc++
 BuildRequires : libwebp-dev
 BuildRequires : libwebp-staticdev
 BuildRequires : mesa-dev
@@ -137,29 +145,49 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1611836173
+export SOURCE_DATE_EPOCH=1620555932
 export GCC_IGNORE_WERROR=1
 ## altflags_pgo content
 ## pgo generate
 export PGO_GEN="-fprofile-generate=/var/tmp/pgo -fprofile-dir=/var/tmp/pgo -fprofile-abs-path -fprofile-update=atomic -fprofile-arcs -ftest-coverage --coverage -fprofile-partial-training"
-export CFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -fPIC -ffat-lto-objects $PGO_GEN"
-export FCFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -fPIC -ffat-lto-objects $PGO_GEN"
-export FFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -fPIC -ffat-lto-objects $PGO_GEN"
-export CXXFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -fvisibility-inlines-hidden -pipe -fPIC -ffat-lto-objects $PGO_GEN"
-export LDFLAGS_GENERATE="-O3 -march=native -mtune=native -falign-functions=32 -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -fPIC -ffat-lto-objects $PGO_GEN"
+export CFLAGS_GENERATE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -falign-functions=32 -flimit-function-alignment -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -ffat-lto-objects -flto=16 -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc -Wl,--build-id=sha1 -fdevirtualize-at-ltrans -Wl,-z,now -Wl,-z,relro -Wl,-sort-common -fasynchronous-unwind-tables $PGO_GEN"
+export FCFLAGS_GENERATE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -falign-functions=32 -flimit-function-alignment -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -ffat-lto-objects -flto=16 -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc -Wl,--build-id=sha1 -fdevirtualize-at-ltrans -Wl,-z,now -Wl,-z,relro -Wl,-sort-common -fasynchronous-unwind-tables $PGO_GEN"
+export FFLAGS_GENERATE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -falign-functions=32 -flimit-function-alignment -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -ffat-lto-objects -flto=16 -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc -Wl,--build-id=sha1 -fdevirtualize-at-ltrans -Wl,-z,now -Wl,-z,relro -Wl,-sort-common -fasynchronous-unwind-tables $PGO_GEN"
+export CXXFLAGS_GENERATE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -falign-functions=32 -flimit-function-alignment -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -fvisibility-inlines-hidden -pipe -ffat-lto-objects -flto=16 -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc -Wl,--build-id=sha1 -fdevirtualize-at-ltrans -Wl,-z,now -Wl,-z,relro -Wl,-sort-common -fasynchronous-unwind-tables $PGO_GEN"
+export LDFLAGS_GENERATE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -falign-functions=32 -flimit-function-alignment -fno-semantic-interposition -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -mtls-dialect=gnu2 -fno-math-errno -fno-trapping-math -pipe -ffat-lto-objects -flto=16 -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc -lpthread -Wl,--build-id=sha1 -fdevirtualize-at-ltrans -Wl,-z,now -Wl,-z,relro -Wl,-sort-common -fasynchronous-unwind-tables $PGO_GEN"
 ## pgo use
-## -ffat-lto-objects -fno-PIE -fno-PIE -m64 -no-pie -fpic -fvisibility=hidden
+## -ffat-lto-objects -fno-PIE -fno-PIE -m64 -no-pie -fPIC -Wl,-z,max-page-size=0x1000 -fvisibility=hidden -flto-partition=none
 ## gcc: -feliminate-unused-debug-types -fipa-pta -flto=16 -Wno-error -Wp,-D_REENTRANT -fno-common
 export PGO_USE="-fprofile-use=/var/tmp/pgo -fprofile-dir=/var/tmp/pgo -fprofile-abs-path -fprofile-correction -fprofile-partial-training"
-export CFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -fPIC -ffat-lto-objects $PGO_USE"
-export FCFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -fPIC -ffat-lto-objects $PGO_USE"
-export FFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -fPIC -ffat-lto-objects $PGO_USE"
-export CXXFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -fvisibility-inlines-hidden -pipe -fPIC -ffat-lto-objects $PGO_USE"
-export LDFLAGS_USE="-g -O3 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -fPIC -ffat-lto-objects $PGO_USE"
+export CFLAGS_USE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc $PGO_USE"
+export FCFLAGS_USE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc $PGO_USE"
+export FFLAGS_USE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc $PGO_USE"
+export CXXFLAGS_USE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -fvisibility-inlines-hidden -pipe -ffat-lto-objects -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc $PGO_USE"
+export LDFLAGS_USE="-g -O3 --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -fgraphite-identity -Wall -Wl,--as-needed -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,--hash-style=gnu -Wl,-O2 -Wl,-z,now -Wl,-z,relro -falign-functions=32 -flimit-function-alignment -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -floop-nest-optimize -floop-block -fno-math-errno -fno-semantic-interposition -fno-stack-protector -fno-trapping-math -ftree-loop-distribute-patterns -ftree-loop-vectorize -ftree-vectorize -funroll-loops -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -feliminate-unused-debug-types -fipa-pta -flto=16 -fno-plt -mtls-dialect=gnu2 -Wl,-sort-common -Wno-error -Wp,-D_REENTRANT -pipe -ffat-lto-objects -fPIC -Wl,-z,max-page-size=0x1000 -fomit-frame-pointer -pthread -static-libstdc++ -static-libgcc -lpthread $PGO_USE"
+#
 export AR=/usr/bin/gcc-ar
 export RANLIB=/usr/bin/gcc-ranlib
 export NM=/usr/bin/gcc-nm
-#export CCACHE_DISABLE=1
+#
+export MAKEFLAGS=%{?_smp_mflags}
+#
+%global _lto_cflags 1
+#global _lto_cflags %{nil}
+%global _disable_maintainer_mode 1
+#%global _disable_maintainer_mode %{nil}
+#
+export CCACHE_DISABLE=true
+export PATH="/usr/lib64/ccache/bin:$PATH"
+export CCACHE_NOHASHDIR=true
+export CCACHE_CPP2=true
+export CCACHE_SLOPPINESS=pch_defines,time_macros,locale,file_stat_matches,file_stat_matches_ctime,include_file_ctime,include_file_mtime,modules,system_headers,clang_index_store,file_macro
+#export CCACHE_SLOPPINESS=modules,include_file_mtime,include_file_ctime,time_macros,pch_defines,file_stat_matches,clang_index_store,system_headers,locale
+#export CCACHE_SLOPPINESS=pch_defines,time_macros,locale,clang_index_store,file_macro
+export CCACHE_DIR=/var/tmp/ccache
+export CCACHE_BASEDIR=/builddir/build/BUILD
+#export CCACHE_LOGFILE=/var/tmp/ccache/cache.debug
+#export CCACHE_DEBUG=true
+#export CCACHE_NODIRECT=true
 ## altflags_pgo end
 export CFLAGS="${CFLAGS_GENERATE}"
 export CXXFLAGS="${CXXFLAGS_GENERATE}"
@@ -196,26 +224,16 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make  %{?_smp_mflags}
 popd
 
-%check
-export LANG=C.UTF-8
-unset http_proxy
-unset https_proxy
-unset no_proxy
-export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
-make %{?_smp_mflags} check
-cd ../build32;
-make %{?_smp_mflags} check || :
-
 %install
-export SOURCE_DATE_EPOCH=1611836173
+export SOURCE_DATE_EPOCH=1620555932
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
+    pushd %{buildroot}/usr/lib32/pkgconfig
+    for i in *.pc ; do ln -s $i 32$i ; done
+    popd
 fi
 popd
 %make_install
@@ -254,6 +272,202 @@ popd
 /usr/lib64/libtiff.so
 /usr/lib64/libtiffxx.so
 /usr/lib64/pkgconfig/libtiff-4.pc
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libtiff.so
+/usr/lib32/libtiffxx.so
+/usr/lib32/pkgconfig/32libtiff-4.pc
+/usr/lib32/pkgconfig/libtiff-4.pc
+
+%files doc
+%defattr(0644,root,root,0755)
+/usr/share/doc/tiff-4.3.0/COPYRIGHT
+/usr/share/doc/tiff-4.3.0/ChangeLog
+/usr/share/doc/tiff-4.3.0/README.md
+/usr/share/doc/tiff-4.3.0/RELEASE-DATE
+/usr/share/doc/tiff-4.3.0/TODO
+/usr/share/doc/tiff-4.3.0/VERSION
+/usr/share/doc/tiff-4.3.0/html/TIFFTechNote2.html
+/usr/share/doc/tiff-4.3.0/html/addingtags.html
+/usr/share/doc/tiff-4.3.0/html/bugs.html
+/usr/share/doc/tiff-4.3.0/html/build.html
+/usr/share/doc/tiff-4.3.0/html/contrib.html
+/usr/share/doc/tiff-4.3.0/html/document.html
+/usr/share/doc/tiff-4.3.0/html/images.html
+/usr/share/doc/tiff-4.3.0/html/images/back.gif
+/usr/share/doc/tiff-4.3.0/html/images/bali.jpg
+/usr/share/doc/tiff-4.3.0/html/images/cat.gif
+/usr/share/doc/tiff-4.3.0/html/images/cover.jpg
+/usr/share/doc/tiff-4.3.0/html/images/cramps.gif
+/usr/share/doc/tiff-4.3.0/html/images/dave.gif
+/usr/share/doc/tiff-4.3.0/html/images/info.gif
+/usr/share/doc/tiff-4.3.0/html/images/jello.jpg
+/usr/share/doc/tiff-4.3.0/html/images/jim.gif
+/usr/share/doc/tiff-4.3.0/html/images/note.gif
+/usr/share/doc/tiff-4.3.0/html/images/oxford.gif
+/usr/share/doc/tiff-4.3.0/html/images/quad.jpg
+/usr/share/doc/tiff-4.3.0/html/images/ring.gif
+/usr/share/doc/tiff-4.3.0/html/images/smallliz.jpg
+/usr/share/doc/tiff-4.3.0/html/images/strike.gif
+/usr/share/doc/tiff-4.3.0/html/images/warning.gif
+/usr/share/doc/tiff-4.3.0/html/index.html
+/usr/share/doc/tiff-4.3.0/html/internals.html
+/usr/share/doc/tiff-4.3.0/html/intro.html
+/usr/share/doc/tiff-4.3.0/html/libtiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFClose.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFDataWidth.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFError.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFieldDataType.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFieldName.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFieldPassCount.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFieldReadCount.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFieldTag.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFieldWriteCount.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFFlush.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFGetField.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFOpen.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFPrintDirectory.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFRGBAImage.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadDirectory.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadEncodedStrip.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadEncodedTile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadRGBAImage.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadRGBAStrip.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadRGBATile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadRawStrip.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadRawTile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadScanline.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFReadTile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFSetDirectory.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFSetField.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWarning.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteDirectory.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteEncodedStrip.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteEncodedTile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteRawStrip.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteRawTile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteScanline.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFWriteTile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFbuffer.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFcodec.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFcolor.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFmemory.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFquery.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFsize.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFstrip.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFswab.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/TIFFtile.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/fax2ps.1.html
+/usr/share/doc/tiff-4.3.0/html/man/fax2tiff.1.html
+/usr/share/doc/tiff-4.3.0/html/man/index.html
+/usr/share/doc/tiff-4.3.0/html/man/libtiff.3tiff.html
+/usr/share/doc/tiff-4.3.0/html/man/pal2rgb.1.html
+/usr/share/doc/tiff-4.3.0/html/man/ppm2tiff.1.html
+/usr/share/doc/tiff-4.3.0/html/man/raw2tiff.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiff2bw.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiff2pdf.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiff2ps.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiff2rgba.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffcmp.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffcp.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffcrop.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffdither.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffdump.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffgt.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffinfo.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffmedian.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffset.1.html
+/usr/share/doc/tiff-4.3.0/html/man/tiffsplit.1.html
+/usr/share/doc/tiff-4.3.0/html/misc.html
+/usr/share/doc/tiff-4.3.0/html/support.html
+/usr/share/doc/tiff-4.3.0/html/tools.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta007.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta016.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta018.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta024.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta028.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta029.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta031.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta032.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta033.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta034.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta035.html
+/usr/share/doc/tiff-4.3.0/html/v3.4beta036.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.1.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.2.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.3.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.4.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.5.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.6-beta.html
+/usr/share/doc/tiff-4.3.0/html/v3.5.7.html
+/usr/share/doc/tiff-4.3.0/html/v3.6.0.html
+/usr/share/doc/tiff-4.3.0/html/v3.6.1.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.0.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.0alpha.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.0beta.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.0beta2.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.1.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.2.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.3.html
+/usr/share/doc/tiff-4.3.0/html/v3.7.4.html
+/usr/share/doc/tiff-4.3.0/html/v3.8.0.html
+/usr/share/doc/tiff-4.3.0/html/v3.8.1.html
+/usr/share/doc/tiff-4.3.0/html/v3.8.2.html
+/usr/share/doc/tiff-4.3.0/html/v3.9.0beta.html
+/usr/share/doc/tiff-4.3.0/html/v3.9.1.html
+/usr/share/doc/tiff-4.3.0/html/v3.9.2.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.0.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.1.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.10.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.2.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.3.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.4.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.4beta.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.5.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.6.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.7.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.8.html
+/usr/share/doc/tiff-4.3.0/html/v4.0.9.html
+/usr/share/doc/tiff-4.3.0/html/v4.1.0.html
+/usr/share/doc/tiff-4.3.0/html/v4.2.0.html
+/usr/share/doc/tiff-4.3.0/html/v4.3.0.html
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libtiff.so.5
+/usr/lib64/libtiff.so.5.7.0
+/usr/lib64/libtiffxx.so.5
+/usr/lib64/libtiffxx.so.5.7.0
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libtiff.so.5
+/usr/lib32/libtiff.so.5.7.0
+/usr/lib32/libtiffxx.so.5
+/usr/lib32/libtiffxx.so.5.7.0
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/fax2ps.1
+/usr/share/man/man1/fax2tiff.1
+/usr/share/man/man1/pal2rgb.1
+/usr/share/man/man1/ppm2tiff.1
+/usr/share/man/man1/raw2tiff.1
+/usr/share/man/man1/tiff2bw.1
+/usr/share/man/man1/tiff2pdf.1
+/usr/share/man/man1/tiff2ps.1
+/usr/share/man/man1/tiff2rgba.1
+/usr/share/man/man1/tiffcmp.1
+/usr/share/man/man1/tiffcp.1
+/usr/share/man/man1/tiffcrop.1
+/usr/share/man/man1/tiffdither.1
+/usr/share/man/man1/tiffdump.1
+/usr/share/man/man1/tiffgt.1
+/usr/share/man/man1/tiffinfo.1
+/usr/share/man/man1/tiffmedian.1
+/usr/share/man/man1/tiffset.1
+/usr/share/man/man1/tiffsplit.1
 /usr/share/man/man3/TIFFClose.3tiff
 /usr/share/man/man3/TIFFDataWidth.3tiff
 /usr/share/man/man3/TIFFError.3tiff
@@ -298,201 +512,6 @@ popd
 /usr/share/man/man3/TIFFswab.3tiff
 /usr/share/man/man3/TIFFtile.3tiff
 /usr/share/man/man3/libtiff.3tiff
-
-%files dev32
-%defattr(-,root,root,-)
-/usr/lib32/libtiff.so
-/usr/lib32/libtiffxx.so
-/usr/lib32/pkgconfig/32libtiff-4.pc
-/usr/lib32/pkgconfig/libtiff-4.pc
-
-%files doc
-%defattr(0644,root,root,0755)
-/usr/share/doc/tiff-4.2.0/COPYRIGHT
-/usr/share/doc/tiff-4.2.0/ChangeLog
-/usr/share/doc/tiff-4.2.0/README.md
-/usr/share/doc/tiff-4.2.0/RELEASE-DATE
-/usr/share/doc/tiff-4.2.0/TODO
-/usr/share/doc/tiff-4.2.0/VERSION
-/usr/share/doc/tiff-4.2.0/html/TIFFTechNote2.html
-/usr/share/doc/tiff-4.2.0/html/addingtags.html
-/usr/share/doc/tiff-4.2.0/html/bugs.html
-/usr/share/doc/tiff-4.2.0/html/build.html
-/usr/share/doc/tiff-4.2.0/html/contrib.html
-/usr/share/doc/tiff-4.2.0/html/document.html
-/usr/share/doc/tiff-4.2.0/html/images.html
-/usr/share/doc/tiff-4.2.0/html/images/back.gif
-/usr/share/doc/tiff-4.2.0/html/images/bali.jpg
-/usr/share/doc/tiff-4.2.0/html/images/cat.gif
-/usr/share/doc/tiff-4.2.0/html/images/cover.jpg
-/usr/share/doc/tiff-4.2.0/html/images/cramps.gif
-/usr/share/doc/tiff-4.2.0/html/images/dave.gif
-/usr/share/doc/tiff-4.2.0/html/images/info.gif
-/usr/share/doc/tiff-4.2.0/html/images/jello.jpg
-/usr/share/doc/tiff-4.2.0/html/images/jim.gif
-/usr/share/doc/tiff-4.2.0/html/images/note.gif
-/usr/share/doc/tiff-4.2.0/html/images/oxford.gif
-/usr/share/doc/tiff-4.2.0/html/images/quad.jpg
-/usr/share/doc/tiff-4.2.0/html/images/ring.gif
-/usr/share/doc/tiff-4.2.0/html/images/smallliz.jpg
-/usr/share/doc/tiff-4.2.0/html/images/strike.gif
-/usr/share/doc/tiff-4.2.0/html/images/warning.gif
-/usr/share/doc/tiff-4.2.0/html/index.html
-/usr/share/doc/tiff-4.2.0/html/internals.html
-/usr/share/doc/tiff-4.2.0/html/intro.html
-/usr/share/doc/tiff-4.2.0/html/libtiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFClose.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFDataWidth.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFError.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFieldDataType.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFieldName.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFieldPassCount.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFieldReadCount.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFieldTag.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFieldWriteCount.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFFlush.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFGetField.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFOpen.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFPrintDirectory.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFRGBAImage.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadDirectory.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadEncodedStrip.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadEncodedTile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadRGBAImage.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadRGBAStrip.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadRGBATile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadRawStrip.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadRawTile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadScanline.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFReadTile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFSetDirectory.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFSetField.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWarning.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteDirectory.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteEncodedStrip.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteEncodedTile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteRawStrip.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteRawTile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteScanline.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFWriteTile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFbuffer.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFcodec.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFcolor.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFmemory.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFquery.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFsize.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFstrip.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFswab.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/TIFFtile.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/fax2ps.1.html
-/usr/share/doc/tiff-4.2.0/html/man/fax2tiff.1.html
-/usr/share/doc/tiff-4.2.0/html/man/index.html
-/usr/share/doc/tiff-4.2.0/html/man/libtiff.3tiff.html
-/usr/share/doc/tiff-4.2.0/html/man/pal2rgb.1.html
-/usr/share/doc/tiff-4.2.0/html/man/ppm2tiff.1.html
-/usr/share/doc/tiff-4.2.0/html/man/raw2tiff.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiff2bw.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiff2pdf.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiff2ps.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiff2rgba.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffcmp.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffcp.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffcrop.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffdither.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffdump.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffgt.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffinfo.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffmedian.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffset.1.html
-/usr/share/doc/tiff-4.2.0/html/man/tiffsplit.1.html
-/usr/share/doc/tiff-4.2.0/html/misc.html
-/usr/share/doc/tiff-4.2.0/html/support.html
-/usr/share/doc/tiff-4.2.0/html/tools.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta007.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta016.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta018.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta024.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta028.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta029.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta031.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta032.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta033.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta034.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta035.html
-/usr/share/doc/tiff-4.2.0/html/v3.4beta036.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.1.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.2.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.3.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.4.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.5.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.6-beta.html
-/usr/share/doc/tiff-4.2.0/html/v3.5.7.html
-/usr/share/doc/tiff-4.2.0/html/v3.6.0.html
-/usr/share/doc/tiff-4.2.0/html/v3.6.1.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.0.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.0alpha.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.0beta.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.0beta2.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.1.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.2.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.3.html
-/usr/share/doc/tiff-4.2.0/html/v3.7.4.html
-/usr/share/doc/tiff-4.2.0/html/v3.8.0.html
-/usr/share/doc/tiff-4.2.0/html/v3.8.1.html
-/usr/share/doc/tiff-4.2.0/html/v3.8.2.html
-/usr/share/doc/tiff-4.2.0/html/v3.9.0beta.html
-/usr/share/doc/tiff-4.2.0/html/v3.9.1.html
-/usr/share/doc/tiff-4.2.0/html/v3.9.2.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.0.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.1.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.10.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.2.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.3.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.4.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.4beta.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.5.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.6.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.7.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.8.html
-/usr/share/doc/tiff-4.2.0/html/v4.0.9.html
-/usr/share/doc/tiff-4.2.0/html/v4.1.0.html
-/usr/share/doc/tiff-4.2.0/html/v4.2.0.html
-
-%files lib
-%defattr(-,root,root,-)
-/usr/lib64/libtiff.so.5
-/usr/lib64/libtiff.so.5.6.0
-/usr/lib64/libtiffxx.so.5
-/usr/lib64/libtiffxx.so.5.6.0
-
-%files lib32
-%defattr(-,root,root,-)
-/usr/lib32/libtiff.so.5
-/usr/lib32/libtiff.so.5.6.0
-/usr/lib32/libtiffxx.so.5
-/usr/lib32/libtiffxx.so.5.6.0
-
-%files man
-%defattr(0644,root,root,0755)
-/usr/share/man/man1/fax2ps.1
-/usr/share/man/man1/fax2tiff.1
-/usr/share/man/man1/pal2rgb.1
-/usr/share/man/man1/ppm2tiff.1
-/usr/share/man/man1/raw2tiff.1
-/usr/share/man/man1/tiff2bw.1
-/usr/share/man/man1/tiff2pdf.1
-/usr/share/man/man1/tiff2ps.1
-/usr/share/man/man1/tiff2rgba.1
-/usr/share/man/man1/tiffcmp.1
-/usr/share/man/man1/tiffcp.1
-/usr/share/man/man1/tiffcrop.1
-/usr/share/man/man1/tiffdither.1
-/usr/share/man/man1/tiffdump.1
-/usr/share/man/man1/tiffgt.1
-/usr/share/man/man1/tiffinfo.1
-/usr/share/man/man1/tiffmedian.1
-/usr/share/man/man1/tiffset.1
-/usr/share/man/man1/tiffsplit.1
 
 %files staticdev
 %defattr(-,root,root,-)
